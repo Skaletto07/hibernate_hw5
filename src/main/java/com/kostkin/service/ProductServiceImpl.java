@@ -1,31 +1,36 @@
 package com.kostkin.service;
 
 import com.kostkin.DAO.ProductDAO;
-import com.kostkin.DAO.ProductDAOImpl;
 import com.kostkin.model.Product;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Component
 public class ProductServiceImpl implements ProductService {
-    private final ProductDAO service = new ProductDAOImpl();
+    private final ProductDAO productDAO;
+
+    public ProductServiceImpl(ProductDAO productDAO) {
+        this.productDAO = productDAO;
+    }
 
     @Override
     public Product findById(Long id) {
-        return service.findById(id);
+        return productDAO.findById(id);
     }
 
     @Override
     public List<Product> findAll() {
-        return service.findAll();
+        return productDAO.findAll();
     }
 
     @Override
     public void deleteById(Long id) {
-        service.deleteById(id);
+        productDAO.deleteById(id);
     }
 
     @Override
     public void saveOrUpdate(Product product) {
-        service.saveOrUpdate(product);
+        productDAO.saveOrUpdate(product);
     }
 }

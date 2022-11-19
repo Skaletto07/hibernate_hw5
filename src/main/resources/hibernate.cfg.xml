@@ -26,6 +26,7 @@
         <property name="hibernate.dbcp.midIdle">5</property>
         <property name="hibernate.dbcp.maxWaitMillis">-1</property>
         <mapping class="com.kostkin.model.Product" />
+        <mapping class="com.kostkin.model.Customer" />
 
     </session-factory>
 </hibernate-configuration>

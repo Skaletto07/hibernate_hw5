@@ -1,6 +1,7 @@
 package com.kostkin.DAO;
 
 import com.kostkin.config.HibernateUtil;
+import com.kostkin.model.Customer;
 import com.kostkin.model.Product;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
@@ -9,46 +10,55 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class ProductDAOImpl implements ProductDAO {
-
+public class CustomerDAOImpl implements CustomerDAO {
     @Override
-    public Product findById(Long id) {
-        Product product = null;
+    public Customer findById(Long id) {
+        Customer customer = null;
         try (Session session = HibernateUtil.getSessionFactory().getCurrentSession()) {
             session.beginTransaction();
-            product = session.get(Product.class, id);
+            customer = session.get(Customer.class, id);
             session.getTransaction().commit();
         }
-        return product;
+        return customer;
     }
 
     @Override
-    public List<Product> findAll() {
-        List<Product> products = null;
+    public List<Customer> findAll() {
+        List<Customer> customers = null;
         try (Session session = HibernateUtil.getSessionFactory().getCurrentSession()) {
             session.beginTransaction();
-            Query<Product> query = session.createQuery("from Product", Product.class);
-            products = query.getResultList();
+            Query<Customer> query = session.createQuery("from Customer", Customer.class);
+            customers = query.getResultList();
             session.getTransaction().commit();
         }
-        return products;
+        return customers;
     }
 
     @Override
     public void deleteById(Long id) {
         try (Session session = HibernateUtil.getSessionFactory().getCurrentSession()) {
             session.beginTransaction();
-            Product product = session.get(Product.class, id);
-            session.delete(product);
+            Customer customer = session.get(Customer.class, id);
+            session.delete(customer);
             session.getTransaction().commit();
         }
     }
 
     @Override
-    public void saveOrUpdate(Product product) {
+    public void saveOrUpdate(Customer customer) {
         try (Session session = HibernateUtil.getSessionFactory().getCurrentSession()) {
             session.beginTransaction();
-            session.saveOrUpdate(product);
+            session.saveOrUpdate(customer);
+            session.getTransaction().commit();
+        }
+    }
+
+    @Override
+    public void addProductToCustomer(Long customerId, Product product) {
+        try (Session session = HibernateUtil.getSessionFactory().getCurrentSession()) {
+            session.beginTransaction();
+            Customer customer = session.get(Customer.class, customerId);
+            customer.getProducts().add(product);
             session.getTransaction().commit();
         }
     }
